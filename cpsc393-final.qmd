@@ -1,0 +1,212 @@
+---
+title: "CPSC 393 Final Project Technical Report"
+author: "Karen Ngo, Michelle Zhang, Todd Hartog"
+format: pdf
+---
+
+# Introduction
+This technical report explores the usage of deep learning models in classifying brain tumor (MRI) scans.
+
+## Background, Problem, and Motivation
+**Brain tumors** are one of the most aggressive diseases among children and adults. Roughly **85-90%** of all primary Central Nervous System (CNS) tumors are brain tumors which makes it an extremely important medical issue to research and learn more about. In the United States, roughly 25,000 people are diagnosed with brain tumors every year and roughly 100,000 people worldwide.The survival rates are very poor for cancerous brain tumors with some varying between 12 to 18 months. The 5-year survival rate is predicted to be roughly **36%** for females and **34%** for males which is very low compared to other diseases and illnesses.
+
+The urgency of this situation sparked and drove the motivation and spark for this project. Manual examination can be error-prone leading to false diagnoses which can produce deadly consequences. Finding ways to accurately detect brain tumors through the use of data and machine learning can be incredibly powerful as technology keeps evolving to become more accurate and reliable.
+
+### MRI Scans
+The best technique for detecting brain tumors is through **Magnetic Resonance Imaging (MRI)**. An MRI is a medical imaging technique that uses magnetic fields and radio waves to generated detailed images of inside the body. Below is an example of an MRI scan with a brain tumor with the tumor circled in red.
+
+![MRI Scan of the Brain](/Users/michellezhang/Desktop/mri.png){width=300}
+
+## Project Goals
+The goal for this project is to build a **Convolutional Neural Network (CNN) Model** to classify MRI scans as showing a tumor or not as well as the type of tumor. Additionally, we strive to fine tune the model so that its accuracy is high enough that it could be useful in the real world.
+
+## Ethical Concerns
+As with many machine learning projects, it is crucial to acknowledge the ethical concerns and address each of those issues.
+
+### Patient Privacy and Consent
+MRI scans allow radiologists to see into a patient's head which is very sensitive information. Therefore, patient privacy and consent is important. With the further enhancement of technology, patient anonymization and security may be at risk for being able to identify patients based on their brain scans. It is important to keep this sensitive information about the patient's health and medical history protected.
+
+### High-risk Classification
+This is considered a high-risk classification meaning that false positives and negatives can have dangerous consequences and in this case, life-threatening consequences. Since brain tumors are considered to be very aggressive diseases that need to be taken extremely seriously, having wrong classifications can lead to unwanted outcomes. For instance, a false negative means that a patient had a brain tumor and the model predicts that they do not or the model predicts the wrong type of tumor. As seen in the table describing the tumors, the treatments and severities differ between tumor which means this wrong diagnoses may lead a patient to not receive the right treatment or any treatment at all.
+
+### Algorithm Bias
+Due to no metadata or further information about the patients, algorithm bias may occur meaning the demographics of the patients may lead to biased or unhelpful results. Not having a diverse enough patient pool may result in the model predicting certain demographics better than others which would result in poor model performance for certain unseen data.
+
+## Data Cleaning
+The data cleaning process was straightforward for this project. Since the data was pre-split into training and testing, the image sizes varied. Therefore, the only cleaning done on the data was making sure all of the image sizes were consistent which was 150px by 150px.
+
+# Analysis
+This section contains the analysis performed on the data to understand it better before feeding it through the models.
+
+## Data Overview
+The dataset is taken from [Kaggle](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri/data?select=Training) and is titled Brain Tumor Classification (MRI). It contains a total of **3,264** images total with **2,870** images in the **Training** folder and **394** in the **Testing** folder which is roughly a **90/10** train test split.
+
+In each of the folders, there are subfolders containing images from each of the classes of tumors. The types of tumors in the dataset are the following:
+
+| Tumor | Cancerous | Appearance | Treatment |
+|--------------------|-----------|---------------------------------|---------------------------|
+| Glioma Tumor | Yes | Areas of contrast enhancement, increased vascularity, indistinct borders, can infiltrate surrounding brain tissue | Surgical removal, radiation therapy, chemotherapy |
+| Meningioma Tumor | No | Well-defined, round, lobulated masses, usually have dural tail (tapering extension), usually constrast-enhancing | Careful monitoring for low-risk tumors, surgery and radiation therapy for higher-risk cases |
+| Pituitary Tumor | No | Usually located within the sella turcica (a bony structure at the base of the skull where the pituitary gland is) | Medication; surgery and radiation therapy if medicine is ineffective |
+| No Tumor | No | no abnormal masses, consistent signals, brain anatomy clear | No need |
+
+As seen in the table above, the shapes of the tumors are all relatively different which can be picked up in the MRI scan. Additionally, the treatments of each of the tumors differ and vary in severity. Therefore, it is crucial to be aware of the impact of incorrect classifications.
+
+## Tumor Visualizations
+Paired with the descriptions of the tumors above, below are MRI scans of each tumor for a better visualization of the them.
+
+### Glioma Tumor
+Below is an example of an MRI with a Glioma tumor with the tumor circled in red.
+
+\newpage
+![MRI Scan of a Glioma Tumor](/Users/michellezhang/Desktop/glioma.png){width=200}
+
+Glioma tumors originate in the glial cells of the brain and can occur in various parts of the brain such as both cerebral hemispheres, cerebellum, and brainstem.
+
+High-grade gliomas appear to be irregular and have enhanced patterns that contrast with the colors of the MRI scans surrounding the tumor which makes them more easily detected. Low-grade gliomas are less distinct in an MRI scan and can be more difficult to detect.
+
+In the training data, the glioma scans vary grately in size, shape, and color. There are some that are very clear such as the one shown above, and others that are more hidden and therefore more difficult to detect.
+
+### Meningioma Tumor
+Below is an example of an MRI with a Meningioma tumor with the tumor circled in red.
+
+\newpage
+![MRI Scan of a Meningioma Tumor](/Users/michellezhang/Desktop/meningioma.png){width=200}
+
+Meningioma tumors originate from meninges which are the protective outer layers covering the brain and the spinal cord. This tumor is commonly found near the surface of the brain and attached to the meninges.
+
+These tumors are usually well-defined in the MRI scan and appear to be round masses with trailing tails. These tumors are easier to detect than most.
+
+Looking at all of the training images, these tumors seem to be the most obvious to detect and most occur on the edge of the brain as shown in the image above.
+
+### Pituitary Tumor
+Below is an example of an MRI with a Pituitary tumor with the tumor circled in red.
+
+![MRI Scan of a Pituitary Tumor](/Users/michellezhang/Desktop/pituitary.png){width=200}
+
+Pituitary tumors originate from the pituitary gland which is a small gland at the base of the brain near the sella turcica, a bony structure in that area.
+
+These tumors are usually located in the center of the brain near the optic nerves. These tumors are usually easier to detect than most tumors. As seen in the image above, this description aligns with the MRI scans found in the training dataset.
+
+### No Tumor
+Below is an example of an MRI with no tumor.
+
+![MRI Scan of No Tumor](/Users/michellezhang/Desktop/no-tumor.png){width=200}
+
+An MRI scan without a tumor shows the different regions of the brain with some of the brain definition preserved in the image shown by the different colors. The colors are usually separated by gray matter which is composed of nerve cell bodies and white matter which contains nerve fibers and axons. The cerebral ventricles, cerebellum, brainstem, and major blood vessels shown in the scan. There should be no abnormal masses or growths shown with different coloring and shapes that is expected.
+
+## MRI Scan Angles
+The MRI scans came in different angles of the head which is important to acknowledge as this inconsistency may be relevant to explain the results later on.
+
+# Methods
+*Explain the structure of your model and your approach to building it. This can also include changes you made to your model in the process of building it. Someone should be able to read your methods section and generally be able to tell exactly what architechture you used.*
+*Methods is complete, appropriate for the task, and would allow someone to roughly recreate the model(s) used. Reasoning behind choices made when building the model are provided.*
+
+This section highlights the details about the two models in this technical report, one being a **Convolutional Neural Network (CNN)** and the other being a **pre-trained model**.
+
+## Convolutional Neural Network (CNN) Background
+A convolutional neural network (CNN) is a neural network used for processing spatial data, in this case, images with the goal of learning hierarchical feature representation. 
+
+/newpage
+![CNN](/Users/michellezhang/Desktop/cnn.png){width=400}
+
+**Convolutional layers** are layers at the core of the network. These layers apply filters to the data in order to comprehend it using hierarchical feature representation to learn complex features about the image.
+
+**Pooling layers** are layers that are used to downsample the dimensions to make the size of the image consistent throughout the network. A common way to do this is **max pooling** which retains the maximum value in that region.
+
+**Activation functions** allow the processing of the data in our model to learn meaningful complex patterns and relationships in the data. There are many different types of functions, but the ones commonly used in non-linear modeling like CNN networks are **ReLu**. They are commonly used for deeper layers of the network and especially with convolutional layers which is consistent with our model architecture. Another common function is **Sigmoid** which is often used in the output of a binary classification to produce probabilities. The output layer of our model uses Sigmoid activation.
+
+**Dropout** is a form of *regularization* that randomly drops a specified fraction of the nodes to prevent the model from being overly reliant on certain nodes which reduces *overfitting*.
+
+**Flattening layers** are used to convert multi-dimensional data into one-dimensional data in order to reshape the data in between layers so it can be fed into later layers.
+
+**Loss functions** are chosen based on the desired output. In our case, the loss function chosen is *categorical crossentropy* which is for categorical outputs.
+
+**Optimizer** find the optimal parameters that can make the model perform the best for its given task. It accomplishes this by minimizing the loss function, using gradient descent for some, adjusting the learning rate which determines the size of the steps taken during parameter updates, momentum, regularization, etc. We chose the *Adam* optimizer which combines the mean square propagation and momentum.
+
+**Early stopping** is another regularization technique used in our CNN to prevent *overfitting* by stopping the training process once the performance starts to degrade at a certain point. It consistently monitoring the model's performance to assess when the training should stop.
+
+## Convolutional Neural Network (CNN) Model Architecture
+The Convolutional Neural Network had the following architecture:
+
+1. 4 Convolutional layers
+2. 7 Activation layers (ReLu for all and Sigmoid for the last)
+3. 2 Pooling layers
+4. 1 Flattening layer
+5. 3 Dropout layers (rate of 0.3)
+6. Adam as optimizer (learning rate of 0.0001)
+7. Utilizes early stopping
+
+## Pre-trained Model
+The pre-trained model is a **VGG16 Pre-trained Model** with the following characteristics:
+
+1. 4 Dense layers
+2. 3 Activation layers (ReLu for all and Sigmoid for the last)
+3. 1 Flattening layer
+4. 2 Dropout layers (rate of 0.3)
+5. Categorical crossentropy loss function
+6. Adam as optimizer (learning rate of 0.0001)
+
+# Results
+*Detailed discussion of how your model performed, and your discussion of how your model performed.*
+*Results provides a nuanced and detailed discussion of the model performance (e.g. beyond simple overall metrics), and discusses the implication of these results (e.g. how they affect whether the model could be used, whether performance differs for different groups, etc. )*
+
+This section contains the discussion of the results of the model and whether it is fit to be used in practice.
+
+## Convolutional Neural Network (CNN) Model Assessment
+Below is the accuracy for the first CNN model:
+
+* Training Accuracy: **%**
+* Testing Accuracy: **%**
+
+## CNN Model AdaGram
+
+## CNN Model Confusion Matrix
+
+## Pre-trained Model Assessment
+Below is the accuracy for the pre-trained model:
+
+* Training Accuracy: **%**
+* Testing Accuracy: **%**
+
+## Pre-trained Model AdaGram
+
+## Pre-trained Model Confusion Matrix
+
+## Overfitting
+There is an *overfitting* with both models because the models are performing very well (very high accuracy) for the training data but fail to generalize enough to unseen data indicated by the low testing accuracy.
+
+This can occur for a few reasons. One reason is *high model complexity* that does not do a good job of generalizing to the new data. This is a common problem with deep networks that are too complex and train too well to the training data without allowing for enough flexibility for new data. A way to fix this is perhaps minimizing the number of regularization techniques.
+
+## In Practice
+We believe that neither of these models should be used in practice due to their overfitting tendencies and.
+
+# Reflection
+*Reflections on what you learned/discovered in the process of doing the assignment. Things you would do differently in the future, ways you'll approach similar problems in the future, etc.*
+*Reflection demonstrates that student(s) understand the problem at hand, had an organized way of approaching the problem, recognize limitations of the curent analysis, and have thought about improvements taht can be made to the model(s) in the future.*
+
+This section contains reflections from our group regarding this final project, the code, and technical report.
+
+## Completion Process
+The process for completing this final project can be broken down into three sections: Code, Presentation, Technical Report.
+
+### Presentation
+As soon as we got a good amount of the code done, we started on the final presentation which did not take too much time. We needed to condense our ideas and report on what we have so far and what we wish to accomplish by the time the final project is due. The work was divided up so that Karen would be working and tinkering with the code because it was difficult to work on the same code on the same file and we thought this would improve our efficiency. Todd and Michelle worked on the presentation and preparing it so that the results from the code could be inserted in. We practiced the presentation a little bit before presentating to make sure our slides flowed easier.
+
+We presented on *Thursday, December 7, 2023* with slides focused on the background, ethical issues data overview, model architectures, model assessment, and issues and future steps. The presentation was short and we tried to communicate everything done so far and especially to stress the importance of our project.
+
+To see our presentation, the click [here](https://www.canva.com/design/DAF2JXwDYDI/g3lRSw1dM2fKZtexb39y2g/view?utm_content=DAF2JXwDYDI&utm_campaign=designshare&utm_medium=link&utm_source=editor).
+
+### Technical Report
+The technical report was started at the same time the presentation was. We decided to make a very in-depth technical report and include a large amount of detail to thoroughly explain the problem, analysis, ethical concerns, model architecture and background information, model assessment and results, and reflections to showcase our understanding of the topic and create a cohesive report. The technical report was worked on alongside the code which was improved on since the presentation.
+
+The technical report was written primarily by Michelle with Todd's help and Karen working on the code. Revisiting old lecture videos and doing additional research was necessary to provide a holistic and cohesive report that explored the ideas in-depth.
+
+## Lessons Learned
+*Time management* was an essential skill we realized during this project. Since there were so many moving parts to it (the code, slides, technical report, etc.) we knew that we needed to work on the project incrementally and keep each other accountable throughout.
+
+We experimented and used *trial and error* throughout the coding process along with *further research* to tinker with the model in order to create one that performed the best for our dataset. The overfitting issue was a main concern that we faced. After multiple times of tinkering around with the regularization and layers, we came a little bit closer than we did during the presentation, but the issue is still present. We have decided to include an entire section in our technical report discussing this issue and further ways that we could do to mitigate it given more time and resources.
+
+*Teamwork* and *collaboration* drove the project forward. Being able to divide and conquer as well as provide insights and suggestions to each other's work made the process of completing the project more smoothly and easier.
+
+Overall, all of us as a group learned a lot from working together and strive to better ourselves and our understanding of in the field of machine learning and data.
