@@ -200,10 +200,19 @@ The accuracy plot for both the training and testing data looks decent. The lines
 The training loss starts low and keeps decreasing steadily which is good because it indicates that as the number of epochs increase, the loss steadily decreases. This shows that the model is learning the training data and adjusting to minimize the loss. The testing loss, on the other hand, starts low and then increases as the epochs increase in oscillations. The fact that the loss is increasing for the testing data is not good and means that the model is not good at predicting new data. This makes sense because the accuracy is not very high and the steadily decreasing training loss shows that the model may be overfitting to the data.
 
 ### CNN Model AdaGram Heatmaps
+**Adagram heatmaps** are used as a visualization tool commonly used in natural language processing (NLP) to capture relationships between words. Therefore, for MRI scans, Adagram heatmaps may not directly show much information in the image. MRI scans are not colored, so it's difficult to pinpoint where the model is getting the most information from.
+
+Below are the Adagram Heatmaps for each type of tumor.
+
 ![CNN Heatmap for Glioma Tumor](/Users/michellezhang/Desktop/heatmap-glioma.png){width=300}
+
 ![CNN Heatmap for Meninglioma Tumor](/Users/michellezhang/Desktop/heatmap-meningioma.png){width=300}
+
 ![CNN Heatmap for Pituitary Tumor](/Users/michellezhang/Desktop/heatmap-pituitary.png){width=300}
+
 ![CNN Heatmap for No Tumor](/Users/michellezhang/Desktop/heatmap-no-tumor.png){width=300}
+
+Most of the heatmaps are dark purple which represents low intensity from the background of the images. The slight yellow/green/blue parts mostly outline the outter head structure of the MRI scan. There are some dots of these blue colors in the skull which sort of align with where the tumor is. However, the heatmaps do not show much detail about the MRI scans with some activation in certain correct regions.
 
 ### CNN Model Confusion Matrix
 ![CNN Confusion Matrix](/Users/michellezhang/Desktop/cnn-confusion-matrix.png){width=300}
