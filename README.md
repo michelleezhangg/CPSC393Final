@@ -1,17 +1,21 @@
-# Group Identifying Information
+# Identifying Information
+
+## Karen Ngo
 * Name: Karen Ngo
 * Student ID:
 * Email: kango@chapman.edu
 
+## Michelle Zhang
 * Name: Michelle Zhang
 * Student ID: 2380210
 * Email: mizhang@chapman.edu
 
+## Todd Hartog
 * Name: Todd Hartog
 * Student ID:
 * Email: thartog@chapman.edu
 
-# Class Identifying Information
+# Class Information
 * Course: CPSC 393-02 Machine Learning
 * Assignment: Final Project
 
