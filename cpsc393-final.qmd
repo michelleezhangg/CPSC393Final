@@ -322,7 +322,9 @@ The sensitivity values indicate that the model had a difficult time correctly cl
 The sensitivity for this model is adequate performing more similar to the first model. The numbers are pretty close and are not terrible.
 
 ## In Practice
-We believe that none of these models are fit to be used in practice. Firstly, all models had an *overfitting* issue with the training data performing significantly better than the testing data.
+We believe that none of these models are fit to be used in practice. Firstly, all models had an *overfitting* issue with the training data performing significantly better than the testing data. With a high-risk classification, having a model that does not perform that well on the testing data is not desirable. If the testing data is actual MRI scans for real-life patients, having a wrong diagnosis would be absolutely terrible. As mentioned in the background, each of the tumors have different treatments and life expectancies. It is crucial to have a model that has high accuracy at predicting the type of tumors correctly and minimize the false negatives.
+
+With all of this being said, the best performing model out of the three is the last model (EfficientNetB3 Transfer Learning Model) because it had the lowest loss values, highest accuracy, and best values of confusion matrices. However, these metrics will not suffice in the real world.
 
 # Reflection
 This section contains reflections from our group regarding this final project, the code, and technical report.
