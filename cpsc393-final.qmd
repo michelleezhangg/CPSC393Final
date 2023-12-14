@@ -138,25 +138,33 @@ The Convolutional Neural Network had the following architecture:
 Transfer learning model start with a pre-trained neural network model that had been trained on large amounts of data. Then, the final layer of the pre-trained model would be added for the specific task. This model differs from CNNs because most of the model is pre-trained on other data. The weights are learned based on that data. Typically, a CNN is trained from scratch which has its own pros and cons. Transfer learning model tend to be more complex because of its extension training on prior data.
 
 Common transfer learning models are VGG, ResNet, Inception, MobileNet, Xception, etc.
-
 In this technical report, we use VGG16 and EfficientNetB3.
 
 ## VGG16 Transfer Learning Model Architecture
 This pre-trained model is a **VGG16 Transfer Leaning Model**. This model is short for Visual Geometry Group and the 16 represents that it is a 16-layer model. It has a deep CNN architecture and is known for its strong performance on image classification and for its simplicity and uniform architecture.
 
-Below are the characteristics of the model:
+Below are the characteristics of the last few layers of the model:
 
 1. 4 Dense layers
 2. 3 Activation layers (ReLu for all and Sigmoid for the last)
 3. 1 Flattening layer
-4. 2 Dropout layers (rate of 0.3)
-5. Categorical crossentropy loss function
-6. Adam as optimizer (learning rate of 0.0001)
+4. 2 Dropout layers (rate of 0.2)
+5. Utilizes Batch Normalization
+6. Categorical crossentropy loss function
+7. Adam as optimizer (learning rate of 0.0001)
 
 ## EfficientNetB3 Transfer Learning Model Architecture
 This pre-trained model is a **EfficientNetB3 Transfer Learning Model** which is part of the EfficientNet neural network architectures. It is known for its level of scaling with prioritization of depth, width, and resolution.
 
-Below are the characteristics of the model:
+Below are the characteristics of the last few layers of the model:
+
+1. 3 Dense layers
+2. 3 Activation layers (ReLu for all and Sigmoid for the last)
+3. 1 Flattening layer
+4. 2 Dropout layers (rate of 0.2)
+5. Utilizes Batch Normalization
+6. Categorical crossentropy loss function
+7. Adam as optimizer (learning rate of 0.0001)
 
 # Results
 This section contains the discussion of the results of the model and whether it is fit to be used in practice.
@@ -175,32 +183,29 @@ There can be many reasons for this. One is that the dataset is not big enough. A
 
 ### CNN Model Loss
 Below is the loss for the CNN model:
+
 * Training Loss: **0.04**
 * Testing Loss: **2.72**
 
 The same trend can be seen in the training and testing loss. The overfitting issue is again highlighted with the training loss being significantly lower than the testing loss. Therefore, the general issue with this model is overfitting.
 
-## CNN Model Accuracy vs Epochs
-
+### CNN Model Accuracy vs Epochs
 ![CNN Accuracy vs Epochs](/Users/michellezhang/Desktop/cnn-accuracy.png){width=300}
 
 The accuracy plot for both the training and testing data looks decent. The lines are increasing steadily which indicates that the model is improving as the epochs increase. At the right of the graph, the lines begin to plateau which may indicate a good stopping point because the model is slowing down its improvement and may cause it to overfitting if it was being trained more. Therefore, experimenting with fewer epochs may have increased the performance of the model because of the overfitting issue. Additionally, the distance between the two lines visualizes the overfitting issue.
 
-## CNN Model Loss vs Epochs
-
+### CNN Model Loss vs Epochs
 ![CNN Loss vs Epochs](/Users/michellezhang/Desktop/cnn-loss.png){width=300}
 
 The training loss starts low and keeps decreasing steadily which is good because it indicates that as the number of epochs increase, the loss steadily decreases. This shows that the model is learning the training data and adjusting to minimize the loss. The testing loss, on the other hand, starts low and then increases as the epochs increase in oscillations. The fact that the loss is increasing for the testing data is not good and means that the model is not good at predicting new data. This makes sense because the accuracy is not very high and the steadily decreasing training loss shows that the model may be overfitting to the data.
 
-## CNN Model AdaGram Heatmaps
-
+### CNN Model AdaGram Heatmaps
 ![CNN Heatmap for Glioma Tumor](/Users/michellezhang/Desktop/heatmap-glioma.png){width=300}
 ![CNN Heatmap for Meninglioma Tumor](/Users/michellezhang/Desktop/heatmap-meningioma.png){width=300}
 ![CNN Heatmap for Pituitary Tumor](/Users/michellezhang/Desktop/heatmap-pituitary.png){width=300}
 ![CNN Heatmap for No Tumor](/Users/michellezhang/Desktop/heatmap-no-tumor.png){width=300}
 
-## CNN Model Confusion Matrix
-
+### CNN Model Confusion Matrix
 ![CNN Confusion Matrix](/Users/michellezhang/Desktop/cnn-confusion-matrix.png){width=300}
 
 To interpret this confusion matrix, below are calculations of *sensitivity*, the percentage that the model was able to predict true positives, and *specificity*, the percentage that the model was able to correctly predict true negatives.
@@ -221,18 +226,35 @@ The specificity values are much higher which is good. The lowest is predicting m
 
 Based on this number, the model struggled more with predicting the specific tumor correctly. Overall, these numbers are not good considering this is a high-risk classification. In the confusion matrix above, the incorrect tumors were predicted more than they should. Additionally, there are many instances of the model predicting that there is no tumor when in fact there is one. This can lead to terrible consequences.
 
-## Transfer Learning with VGG16 Model Assessment
+## VGG16 Transfer Learning Model Assessment
+
+### VGG16 Model Accuracy
 Below is the accuracy for the VGG16 model:
 
 * Training Accuracy: **94.67%**
 * Testing Accuracy: **71.32%**
-* Training Loss: **0.36**
-* Testing Loss: **1.23**
 
+The analysis of the accuracy is similar to the first model. The training accuracy is very high while the testing accuracy is significantly lower indicating an *overfitting* issue. Since the transfer learning model is likely to be more complex than the first CNN model, perhaps reducing the complexity would be beneficial. Overall, the same solutions mentioned in the first model's performance assessment can be applied to this model.
+
+### VGG16 Model Loss
+Below is the loss for the VGG16 model:
+
+* Training Loss: **0.04**
+* Testing Loss: **9.69**
+
+Similar to the first model, the overfitting issue can be seen in the loss as well. There is also more of a discrepancy by a lot between these losses compared to the first model. This indicates poorer model performance.
+
+### VGG16 Model Accuracy vs Epochs
 ![VGG16 Accuracy vs Epochs](/Users/michellezhang/Desktop/vgg16-accuracy.png){width=300}
+
+Both training and testing accuracies increase steadily as the epochs increase. However, the lines are oscillating with peaks everywhere which may indicating that the model has a bit of difficulty learning. Additionally, the test accuracy begins to plateau as the number of epochs increase which is not a good sign. The distance between the lines show the overfitting issue as well.
+
+### VGG16 Model Loss vs Epochs
 ![VGG16 Loss vs Epochs](/Users/michellezhang/Desktop/vgg16-loss.png){width=300}
 
-## Transfer Learning with VGG16 Model Confusion Matrix
+The training loss is very low steadily which indicates that the model did a good job learning and minimizing the loss. However, the testing loss has large oscilations and remains stagnant, not steadily increasing or decreasing. The loss reaches heights of 16 to lows of 6, so the range is large which indicates that the model did not do a good job of minimizing the loss for unseen data. This illustrates the overfitting issue where the model does a good job of minimizing the loss in the training, but fails to generalize enough to unseen data leaving the testing loss to be all over the place and not converging.
+
+### VGG16 Transfer Learning Model Confusion Matrix
 
 ![VGG16 Confusion Matrix](/Users/michellezhang/Desktop/vgg16-confusion-matrix.png){width=300}
 
@@ -246,19 +268,43 @@ Below is the accuracy for the VGG16 model:
 * Pituitary Tumor Specificity: **98.84%**
 * No Tumor Specificity: **97.69%**
 
-## Transfer Learning with EfficientNetB3 Model Assessment
+These numbers are similar to the first model's. The sensitivity is relatively low with the lowest being classifying the glioma tumor, consistent with the first model. Overall, the sensitivties are lower than the first model which means that this model performed worse in terms of classifying the correct tumor.
+
+The specificity is very high for all of the numbers in this model. This indicates that this model did well at distinguishing between the tumors by choosing the tumors that were not present correctly.
+
+It is important to consider both sensitivity and specificity in a high-risk classification. In this case, the sensitivity is low and the specificty is very high and accurate. In this regard, perhaps this model performed better than the first one.
+
+## EfficientNetB3 Transfer Learning Model Assessment
+
+### EfficientNetB3 Model Accuracy
 Below is the accuracy for the EfficientNetB3 model:
 
 * Training Accuracy: **99.48%**
 * Testing Accuracy: **77.16%**
-* Training Loss: **0.04**
-* Testing Loss: **9.69**
 
+This accuracy is the best out of the three models. The overfitting issue is still present indicated by the significant gap between the training and testing accuracies. However, the testing accuracy is higher than the other two models which is a good sign.
+
+The ways of tackling the overfitting issue is mentioned extensively in the first model's analysis and applies to this model as well.
+
+### EfficientNetB3 Model Loss
+Below is the loss for the EfficientNetB3 model:
+
+* Training Loss: **0.36**
+* Testing Loss: **1.23**
+
+Similar to the previous two models, the loss values show that there is still overfitting. However, the testing loss is the lowest than the previous models'. This aligns with the testing accuracy being higher than the others which indicates better model performance.
+
+### EfficientNetB3 Model Accuracy vs Epochs
 ![EfficientNetB3 Accuracy vs Epochs](/Users/michellezhang/Desktop/efficient-accuracy.png){width=300}
+
+Both accuracies increase steadily as the epochs increase. The training accuracy looks relatively steady and not oscillating meaning that the model is doing a good job of learning as the epochs increase. However, the testing accuracy has large oscillations which illustrates how the model had a difficult time improving the accuracy with the testing data in a steady way.
+
+### EfficientNetB3 Model Loss vs Epochs
 ![EfficientNetB3 Loss vs Epochs](/Users/michellezhang/Desktop/efficient-loss.png){width=300}
 
-## Transfer Learning with EfficientNetB3 Model Confusion Matrix
+The loss for both training and testing data look good. The training loss is more unform and decreases more than the testing one. Compared to the other loss graphs, this is the most uniform and clean one indicating that the model performed well in terms of minimizing the loss. The testing loss is not as uniform which is expected due to it having fewer images, but overall, the losses look good for this model.
 
+### EfficientNetB3 Transfer Learning Model Confusion Matrix
 ![EfficientNetB3 Confusion Matrix](/Users/michellezhang/Desktop/efficient-confusion-matrix.png){width=300}
 
 * Glioma Tumor Sensitivity: **13.27%**
@@ -271,13 +317,14 @@ Below is the accuracy for the EfficientNetB3 model:
 * Pituitary Tumor Specificity: **67.16%**
 * No Tumor Specificity: **74.39%**
 
+The sensitivity values indicate that the model had a difficult time correctly classifying glioma and pituitary tumors which is consistent with the background of those tumors being more difficult to classify. These values are low and not to be trusted especially considering this is a high-risk classification. The model performed better at classifying meningioma and no tumors but at roughly 40% which is better, but not good enough to be used in practice.
+
+The sensitivity for this model is adequate performing more similar to the first model. The numbers are pretty close and are not terrible.
+
 ## In Practice
-We believe that neither of these models should be used in practice due to their overfitting tendencies and.
+We believe that none of these models are fit to be used in practice. Firstly, all models had an *overfitting* issue with the training data performing significantly better than the testing data.
 
 # Reflection
-*Reflections on what you learned/discovered in the process of doing the assignment. Things you would do differently in the future, ways you'll approach similar problems in the future, etc.*
-*Reflection demonstrates that student(s) understand the problem at hand, had an organized way of approaching the problem, recognize limitations of the curent analysis, and have thought about improvements taht can be made to the model(s) in the future.*
-
 This section contains reflections from our group regarding this final project, the code, and technical report.
 
 ## Completion Process
