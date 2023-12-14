@@ -1,1 +1,41 @@
-# CPSC393Final
+# Group Identifying Information
+* Name: Karen Ngo
+* Student ID:
+* Email: kango@chapman.edu
+
+* Name: Michelle Zhang
+* Student ID: 2380210
+* Email: mizhang@chapman.edu
+
+* Name: Todd Hartog
+* Student ID:
+* Email: thartog@chapman.edu
+
+# Class Identifying Information
+* Course: CPSC 393-02 Machine Learning
+* Assignment: Final Project
+
+# Source Files
+* cpsc393-final.ipynb
+* cpsc393-final.pdf
+* README.md
+
+# Contributions
+This section contains the group contributions.
+
+## Karen Ngo
+* Found the dataset
+* Worked on the Final Project Proposal
+* Worked on all of the code and model architecture, found the pre-trained model
+* Presented about model architectures
+
+## Michelle Zhang
+* Worked on the Final Project Proposal
+* Worked on the presentation slides
+* Presented about model assessment and issues/future work
+* Wrote the technical report
+
+## Todd Hartog
+* Worked on the Final Project Proposal
+* Worked on the presentation slides
+* Presented about the datasetb background, ethical concerns, and data overview
