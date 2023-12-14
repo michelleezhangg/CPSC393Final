@@ -99,9 +99,6 @@ An MRI scan without a tumor shows the different regions of the brain with some o
 The MRI scans came in different angles of the head which is important to acknowledge as this inconsistency may be relevant to explain the results later on.
 
 # Methods
-*Explain the structure of your model and your approach to building it. This can also include changes you made to your model in the process of building it. Someone should be able to read your methods section and generally be able to tell exactly what architechture you used.*
-*Methods is complete, appropriate for the task, and would allow someone to roughly recreate the model(s) used. Reasoning behind choices made when building the model are provided.*
-
 This section highlights the details about the three models in this technical report, one being a **Convolutional Neural Network (CNN)** and the other two being a **pre-trained models**.
 
 ## Convolutional Neural Network (CNN) Background
@@ -137,8 +134,17 @@ The Convolutional Neural Network had the following architecture:
 6. Adam as optimizer (learning rate of 0.0001)
 7. Utilizes early stopping (validation loss with patience of 0.5)
 
-## Pre-trained Model
-The pre-trained model is a **VGG16 Pre-trained Model** with the following characteristics:
+## Transfer Learning Models Background
+Transfer learning model start with a pre-trained neural network model that had been trained on large amounts of data. Then, the final layer of the pre-trained model would be added for the specific task. This model differs from CNNs because most of the model is pre-trained on other data. The weights are learned based on that data. Typically, a CNN is trained from scratch which has its own pros and cons. Transfer learning model tend to be more complex because of its extension training on prior data.
+
+Common transfer learning models are VGG, ResNet, Inception, MobileNet, Xception, etc.
+
+In this technical report, we use VGG16 and EfficientNetB3.
+
+## VGG16 Transfer Learning Model Architecture
+This pre-trained model is a **VGG16 Transfer Leaning Model**. This model is short for Visual Geometry Group and the 16 represents that it is a 16-layer model. It has a deep CNN architecture and is known for its strong performance on image classification and for its simplicity and uniform architecture.
+
+Below are the characteristics of the model:
 
 1. 4 Dense layers
 2. 3 Activation layers (ReLu for all and Sigmoid for the last)
@@ -147,13 +153,12 @@ The pre-trained model is a **VGG16 Pre-trained Model** with the following charac
 5. Categorical crossentropy loss function
 6. Adam as optimizer (learning rate of 0.0001)
 
-## Transfer Learning
+## EfficientNetB3 Transfer Learning Model Architecture
+This pre-trained model is a **EfficientNetB3 Transfer Learning Model** which is part of the EfficientNet neural network architectures. It is known for its level of scaling with prioritization of depth, width, and resolution.
 
+Below are the characteristics of the model:
 
 # Results
-*Detailed discussion of how your model performed, and your discussion of how your model performed.*
-*Results provides a nuanced and detailed discussion of the model performance (e.g. beyond simple overall metrics), and discusses the implication of these results (e.g. how they affect whether the model could be used, whether performance differs for different groups, etc. )*
-
 This section contains the discussion of the results of the model and whether it is fit to be used in practice.
 
 ## Convolutional Neural Network (CNN) Model Assessment
