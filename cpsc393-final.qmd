@@ -198,6 +198,8 @@ The training loss starts low and keeps decreasing steadily which is good because
 
 ![CNN Confusion Matrix](/Users/michellezhang/Desktop/cnn-confusion-matrix.png){width=300}
 
+To interpret this confusion matrix, below are calculations of *sensitivity*, the percentage that the model was able to predict true positives, and *specificity*, the percentage that the model was able to correctly predict true negatives.
+
 * Glioma Tumor Sensitivity: **2%**
 * Meningioma Tumor Sensitivity: **41.90%**
 * Pituitary Tumor Sensitivity: **17.57%**
@@ -207,6 +209,12 @@ The training loss starts low and keeps decreasing steadily which is good because
 * Meningioma Tumor Specificity: **56.70%**
 * Pituitary Tumor Specificity: **63.30%**
 * No Tumor Specificity: **71.93%**
+
+The ability that the model predicted a true positive is incredibly low for the glioma tumor. 2% is incredibly low and based on the background, this tumor seemed to be the most difficult to classify out of the three. The best sensitivity were no tumors which means that the model was able to correctly predict that the MRI scan does not have a tumor roughly 44% of the time. These numbers are low which indicates that the model did not perform very well.
+
+The specificity values are much higher which is good. The lowest is predicting meningioma tumors and the best is predicting glioma. These numbers are not too low which is a good sign.
+
+Based on this number, the model struggled more with predicting the specific tumor correctly. Overall, these numbers are not good considering this is a high-risk classification. In the confusion matrix above, the incorrect tumors were predicted more than they should. Additionally, there are many instances of the model predicting that there is no tumor when in fact there is one. This can lead to terrible consequences.
 
 ## Transfer Learning with VGG16 Model Assessment
 Below is the accuracy for the VGG16 model:
