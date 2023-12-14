@@ -102,7 +102,7 @@ The MRI scans came in different angles of the head which is important to acknowl
 *Explain the structure of your model and your approach to building it. This can also include changes you made to your model in the process of building it. Someone should be able to read your methods section and generally be able to tell exactly what architechture you used.*
 *Methods is complete, appropriate for the task, and would allow someone to roughly recreate the model(s) used. Reasoning behind choices made when building the model are provided.*
 
-This section highlights the details about the two models in this technical report, one being a **Convolutional Neural Network (CNN)** and the other being a **pre-trained model**.
+This section highlights the details about the three models in this technical report, one being a **Convolutional Neural Network (CNN)** and the other two being a **pre-trained models**.
 
 ## Convolutional Neural Network (CNN) Background
 A convolutional neural network (CNN) is a neural network used for processing spatial data, in this case, images with the goal of learning hierarchical feature representation. 
@@ -135,7 +135,7 @@ The Convolutional Neural Network had the following architecture:
 4. 1 Flattening layer
 5. 3 Dropout layers (rate of 0.3)
 6. Adam as optimizer (learning rate of 0.0001)
-7. Utilizes early stopping
+7. Utilizes early stopping (validation loss with patience of 0.5)
 
 ## Pre-trained Model
 The pre-trained model is a **VGG16 Pre-trained Model** with the following characteristics:
@@ -147,6 +147,9 @@ The pre-trained model is a **VGG16 Pre-trained Model** with the following charac
 5. Categorical crossentropy loss function
 6. Adam as optimizer (learning rate of 0.0001)
 
+## Transfer Learning
+
+
 # Results
 *Detailed discussion of how your model performed, and your discussion of how your model performed.*
 *Results provides a nuanced and detailed discussion of the model performance (e.g. beyond simple overall metrics), and discusses the implication of these results (e.g. how they affect whether the model could be used, whether performance differs for different groups, etc. )*
@@ -154,29 +157,106 @@ The pre-trained model is a **VGG16 Pre-trained Model** with the following charac
 This section contains the discussion of the results of the model and whether it is fit to be used in practice.
 
 ## Convolutional Neural Network (CNN) Model Assessment
-Below is the accuracy for the first CNN model:
 
-* Training Accuracy: **%**
-* Testing Accuracy: **%**
+### CNN Model Accuracy
+Below is the accuracy for the CNN model:
 
-## CNN Model AdaGram
+* Training Accuracy: **99.09%**
+* Testing Accuracy: **74.37%**
+
+According to the accuracy scores above, the training accuracy is very high (nearly 100%) and the testing accuracy is significantly low which indicates *overfitting*. This occurs when the model is able to fit and train very well on the training data and perform not as well on unseen data because it is not generalized enough. A testing accuracy of 74.37% is not good considering that this is a high-risk classification.
+
+There can be many reasons for this. One is that the dataset is not big enough. A model will benefit from having more data because the accuracy score would not be as sensitive to incorrect classifications. Additionally, the train-test-split was 90/10 which was how the dataset came. Perhaps increasing the test size and decreasing the training size would reduce the overfitting issue because there would be more data for the model to predict than having only 10% of the images. Additionally, the regularization techniques could have been tinkered more with more time and resources.
+
+### CNN Model Loss
+Below is the loss for the CNN model:
+* Training Loss: **0.04**
+* Testing Loss: **2.72**
+
+The same trend can be seen in the training and testing loss. The overfitting issue is again highlighted with the training loss being significantly lower than the testing loss. Therefore, the general issue with this model is overfitting.
+
+## CNN Model Accuracy vs Epochs
+
+![CNN Accuracy vs Epochs](/Users/michellezhang/Desktop/cnn-accuracy.png){width=300}
+
+The accuracy plot for both the training and testing data looks decent. The lines are increasing steadily which indicates that the model is improving as the epochs increase. At the right of the graph, the lines begin to plateau which may indicate a good stopping point because the model is slowing down its improvement and may cause it to overfitting if it was being trained more. Therefore, experimenting with fewer epochs may have increased the performance of the model because of the overfitting issue. Additionally, the distance between the two lines visualizes the overfitting issue.
+
+## CNN Model Loss vs Epochs
+
+![CNN Loss vs Epochs](/Users/michellezhang/Desktop/cnn-loss.png){width=300}
+
+The training loss starts low and keeps decreasing steadily which is good because it indicates that as the number of epochs increase, the loss steadily decreases. This shows that the model is learning the training data and adjusting to minimize the loss. The testing loss, on the other hand, starts low and then increases as the epochs increase in oscillations. The fact that the loss is increasing for the testing data is not good and means that the model is not good at predicting new data. This makes sense because the accuracy is not very high and the steadily decreasing training loss shows that the model may be overfitting to the data.
+
+## CNN Model AdaGram Heatmaps
+
+![CNN Heatmap for Glioma Tumor](/Users/michellezhang/Desktop/heatmap-glioma.png){width=300}
+![CNN Heatmap for Meninglioma Tumor](/Users/michellezhang/Desktop/heatmap-meningioma.png){width=300}
+![CNN Heatmap for Pituitary Tumor](/Users/michellezhang/Desktop/heatmap-pituitary.png){width=300}
+![CNN Heatmap for No Tumor](/Users/michellezhang/Desktop/heatmap-no-tumor.png){width=300}
 
 ## CNN Model Confusion Matrix
 
-## Pre-trained Model Assessment
-Below is the accuracy for the pre-trained model:
+![CNN Confusion Matrix](/Users/michellezhang/Desktop/cnn-confusion-matrix.png){width=300}
 
-* Training Accuracy: **%**
-* Testing Accuracy: **%**
+* Glioma Tumor Sensitivity: **2%**
+* Meningioma Tumor Sensitivity: **41.90%**
+* Pituitary Tumor Sensitivity: **17.57%**
+* No Tumor Sensitivity: **43.48%**
 
-## Pre-trained Model AdaGram
+* Glioma Tumor Specificity: **84.77%**
+* Meningioma Tumor Specificity: **56.70%**
+* Pituitary Tumor Specificity: **63.30%**
+* No Tumor Specificity: **71.93%**
 
-## Pre-trained Model Confusion Matrix
+## Transfer Learning with VGG16 Model Assessment
+Below is the accuracy for the VGG16 model:
 
-## Overfitting
-There is an *overfitting* with both models because the models are performing very well (very high accuracy) for the training data but fail to generalize enough to unseen data indicated by the low testing accuracy.
+* Training Accuracy: **94.67%**
+* Testing Accuracy: **71.32%**
+* Training Loss: **0.36**
+* Testing Loss: **1.23**
 
-This can occur for a few reasons. One reason is *high model complexity* that does not do a good job of generalizing to the new data. This is a common problem with deep networks that are too complex and train too well to the training data without allowing for enough flexibility for new data. A way to fix this is perhaps minimizing the number of regularization techniques.
+![VGG16 Accuracy vs Epochs](/Users/michellezhang/Desktop/vgg16-accuracy.png){width=300}
+![VGG16 Loss vs Epochs](/Users/michellezhang/Desktop/vgg16-loss.png){width=300}
+
+## Transfer Learning with VGG16 Model Confusion Matrix
+
+![VGG16 Confusion Matrix](/Users/michellezhang/Desktop/vgg16-confusion-matrix.png){width=300}
+
+* Glioma Tumor Sensitivity: **8%**
+* Meningioma Tumor Sensitivity: **37.14%**
+* Pituitary Tumor Sensitivity: **16.22%**
+* No Tumor Sensitivity: **43.48%**
+
+* Glioma Tumor Specificity: **99.61%**
+* Meningioma Tumor Specificity: **93.64%**
+* Pituitary Tumor Specificity: **98.84%**
+* No Tumor Specificity: **97.69%**
+
+## Transfer Learning with EfficientNetB3 Model Assessment
+Below is the accuracy for the EfficientNetB3 model:
+
+* Training Accuracy: **99.48%**
+* Testing Accuracy: **77.16%**
+* Training Loss: **0.04**
+* Testing Loss: **9.69**
+
+![EfficientNetB3 Accuracy vs Epochs](/Users/michellezhang/Desktop/efficient-accuracy.png){width=300}
+![EfficientNetB3 Loss vs Epochs](/Users/michellezhang/Desktop/efficient-loss.png){width=300}
+
+## Transfer Learning with EfficientNetB3 Model Confusion Matrix
+
+![EfficientNetB3 Confusion Matrix](/Users/michellezhang/Desktop/efficient-confusion-matrix.png){width=300}
+
+* Glioma Tumor Sensitivity: **13.27%**
+* Meningioma Tumor Sensitivity: **39.18%**
+* Pituitary Tumor Sensitivity: **17.14%**
+* No Tumor Sensitivity: **39.52%**
+
+* Glioma Tumor Specificity: **69.23%**
+* Meningioma Tumor Specificity: **69.01%**
+* Pituitary Tumor Specificity: **67.16%**
+* No Tumor Specificity: **74.39%**
 
 ## In Practice
 We believe that neither of these models should be used in practice due to their overfitting tendencies and.
